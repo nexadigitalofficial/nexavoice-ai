@@ -1,0 +1,25 @@
+{
+  "name": "NexaVoice AI - Çevrimdışı Türkçe Sesli Asistan",
+  "short_name": "NexaVoice AI",
+  "description": "Saha ve gayrimenkul danışmanları için tamamen offline, Türkçe ses tanıma ve NLP yetenekli akıllı görev asistanı",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#121212",
+  "theme_color": "#0F172A",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

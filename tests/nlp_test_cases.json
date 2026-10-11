@@ -1,0 +1,421 @@
+[
+  {
+    "id": "tc_01",
+    "input": "Bugün saat üçte villa görüşmesi var, yarın tapu randevusu, Ahmet Bey'i akşam ara.",
+    "expected_task_count": 3,
+    "tasks": [
+      {
+        "category": "Görüşme",
+        "relative_day": 0,
+        "due_time": "15:00",
+        "is_time_estimated": false,
+        "place": "Villa"
+      },
+      {
+        "category": "Randevu",
+        "relative_day": 1,
+        "due_time": "14:00",
+        "is_time_estimated": true,
+        "place": "Tapu"
+      },
+      {
+        "category": "Arama",
+        "relative_day": 0,
+        "due_time": "19:00",
+        "is_time_estimated": true,
+        "person": "Ahmet Bey"
+      }
+    ]
+  },
+  {
+    "id": "tc_02",
+    "input": "Yarın saat onda daire gösterimi yapılacak",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Gezi / Yer Gösterme",
+        "relative_day": 1,
+        "due_time": "10:00",
+        "is_time_estimated": false,
+        "place": "Daire"
+      }
+    ]
+  },
+  {
+    "id": "tc_03",
+    "input": "Mehmet Bey'e tapu masraflarını ilet ve sözleşmeyi hazırla",
+    "expected_task_count": 2,
+    "tasks": [
+      {
+        "category": "Evrak / Tapu",
+        "relative_day": 0,
+        "person": "Mehmet Bey",
+        "place": "Tapu"
+      },
+      {
+        "category": "Evrak / Tapu",
+        "relative_day": 0
+      }
+    ]
+  },
+  {
+    "id": "tc_04",
+    "input": "Acil olarak ekspertiz raporunu incele",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Evrak / Tapu",
+        "priority": "high",
+        "relative_day": 0
+      }
+    ]
+  },
+  {
+    "id": "tc_05",
+    "input": "Haftaya salı saat on birde noter randevusu var",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Randevu",
+        "due_time": "11:00",
+        "is_time_estimated": false,
+        "place": "Noter"
+      }
+    ]
+  },
+  {
+    "id": "tc_06",
+    "input": "Fatma Hanım'ı ara ve kapora durumunu sor",
+    "expected_task_count": 2,
+    "tasks": [
+      {
+        "category": "Arama",
+        "person": "Fatma Hanım"
+      },
+      {
+        "category": "Evrak / Tapu"
+      }
+    ]
+  },
+  {
+    "id": "tc_07",
+    "input": "Öbür gün saat iki buçukta arsa sahibi ile buluş",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Görüşme",
+        "relative_day": 2,
+        "due_time": "14:30",
+        "place": "Arsa"
+      }
+    ]
+  },
+  {
+    "id": "tc_08",
+    "input": "Bugün akşama doğru portföy fotoğraflarını çek",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Gezi / Yer Gösterme",
+        "relative_day": 0,
+        "due_time": "19:00",
+        "is_time_estimated": true
+      }
+    ]
+  },
+  {
+    "id": "tc_09",
+    "input": "Villa için müşteri teklifini değerlendir",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Takip",
+        "place": "Villa"
+      }
+    ]
+  },
+  {
+    "id": "tc_10",
+    "input": "Mimar Ali Bey ile şantiyede saat 16:00'da görüş",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Görüşme",
+        "due_time": "16:00",
+        "person": "Ali Bey",
+        "place": "Şantiye"
+      }
+    ]
+  },
+  {
+    "id": "tc_11",
+    "input": "Yarın sabah dokuzda belediyeden rayiç bedeli al",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Evrak / Tapu",
+        "relative_day": 1,
+        "due_time": "09:00",
+        "place": "Belediye"
+      }
+    ]
+  },
+  {
+    "id": "tc_12",
+    "input": "Bankadan ipotek evraklarını al sonra tapuya teslim et",
+    "expected_task_count": 2,
+    "tasks": [
+      {
+        "category": "Evrak / Tapu",
+        "place": "Banka"
+      },
+      {
+        "category": "Evrak / Tapu",
+        "place": "Tapu"
+      }
+    ]
+  },
+  {
+    "id": "tc_13",
+    "input": "Ayın 15'inde kira sözleşmesini yenile",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Evrak / Tapu"
+      }
+    ]
+  },
+  {
+    "id": "tc_14",
+    "input": "Zeynep Hanım'a yeni daire portföyünü whatsapptan gönder",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Arama",
+        "person": "Zeynep Hanım",
+        "place": "Daire"
+      }
+    ]
+  },
+  {
+    "id": "tc_15",
+    "input": "Fırsat bulursan ofis ilanlarını kontrol et",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Takip",
+        "priority": "low",
+        "place": "Ofis"
+      }
+    ]
+  },
+  {
+    "id": "tc_16",
+    "input": "Hemen Avukat Can Bey'i ara çok önemli",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Arama",
+        "priority": "high",
+        "person": "Can Bey"
+      }
+    ]
+  },
+  {
+    "id": "tc_17",
+    "input": "Yarım saat sonra müşteriyi ara",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Arama",
+        "is_time_estimated": false
+      }
+    ]
+  },
+  {
+    "id": "tc_18",
+    "input": "Gelecek hafta çarşamba tapu dairesine git",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Evrak / Tapu",
+        "place": "Tapu Dairesi"
+      }
+    ]
+  },
+  {
+    "id": "tc_19",
+    "input": "Bugün saat 14:30'da plazada dükkan sunumu var",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Görüşme",
+        "relative_day": 0,
+        "due_time": "14:30",
+        "place": "Plaza"
+      }
+    ]
+  },
+  {
+    "id": "tc_20",
+    "input": "Öğleden sonra eksper ile dairede buluş",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Görüşme",
+        "due_time": "14:30",
+        "is_time_estimated": true,
+        "place": "Daire"
+      }
+    ]
+  },
+  {
+    "id": "tc_21",
+    "input": "Mustafa Bey'e kapora makbuzunu imzalat",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Evrak / Tapu",
+        "person": "Mustafa Bey"
+      }
+    ]
+  },
+  {
+    "id": "tc_22",
+    "input": "Akşam Hasan Bey ile yemekte pazarlık yap",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Görüşme",
+        "due_time": "19:00",
+        "person": "Hasan Bey"
+      }
+    ]
+  },
+  {
+    "id": "tc_23",
+    "input": "Sabah erkenden kadastro müdürlüğüne uğra",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Evrak / Tapu",
+        "due_time": "09:00",
+        "place": "Kadastro"
+      }
+    ]
+  },
+  {
+    "id": "tc_24",
+    "input": "Yarın saat 17:00'de sözleşme imzalanacak",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Evrak / Tapu",
+        "relative_day": 1,
+        "due_time": "17:00"
+      }
+    ]
+  },
+  {
+    "id": "tc_25",
+    "input": "Haftaya cuma noterden yetki belgesi çıkart",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Evrak / Tapu",
+        "place": "Noter"
+      }
+    ]
+  },
+  {
+    "id": "tc_26",
+    "input": "Sakın unutma Emre Bey'e dönüş yap",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Takip",
+        "priority": "high",
+        "person": "Emre Bey"
+      }
+    ]
+  },
+  {
+    "id": "tc_27",
+    "input": "Dairenin aidat borcunu sor ve yöneticiyi ara",
+    "expected_task_count": 2,
+    "tasks": [
+      {
+        "category": "Arama",
+        "place": "Daire"
+      },
+      {
+        "category": "Arama"
+      }
+    ]
+  },
+  {
+    "id": "tc_28",
+    "input": "Öbür gün sabah arsa imar durumuna bak",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Gezi / Yer Gösterme",
+        "relative_day": 2,
+        "due_time": "09:00",
+        "place": "Arsa"
+      }
+    ]
+  },
+  {
+    "id": "tc_29",
+    "input": "İlk iş olarak acil tapu harcını yatır",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Evrak / Tapu",
+        "priority": "high",
+        "place": "Tapu"
+      }
+    ]
+  },
+  {
+    "id": "tc_30",
+    "input": "Zamanın olunca sahibinden ilanlarını güncelle",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Takip",
+        "priority": "low"
+      }
+    ]
+  },
+  {
+    "id": "tc_31",
+    "input": "Bugün saat üçte ofiste toplantı var sonra Hüseyin Bey'i ara",
+    "expected_task_count": 2,
+    "tasks": [
+      {
+        "category": "Görüşme",
+        "relative_day": 0,
+        "due_time": "15:00",
+        "place": "Ofis"
+      },
+      {
+        "category": "Arama",
+        "person": "Hüseyin Bey"
+      }
+    ]
+  },
+  {
+    "id": "tc_32",
+    "input": "Yarın öğle yemeğinde yatırımcıyla görüş",
+    "expected_task_count": 1,
+    "tasks": [
+      {
+        "category": "Görüşme",
+        "relative_day": 1,
+        "due_time": "12:30"
+      }
+    ]
+  }
+]

@@ -1,0 +1,120 @@
+{
+  "relative_days": {
+    "bugün": 0,
+    "bugun": 0,
+    "bu gün": 0,
+    "yarın": 1,
+    "yarin": 1,
+    "öbür gün": 2,
+    "obur gun": 2,
+    "oburgun": 2,
+    "yarından sonra": 2,
+    "yarindan sonra": 2
+  },
+  "weekdays": {
+    "pazartesi": 1,
+    "salı": 2,
+    "sali": 2,
+    "çarşamba": 3,
+    "carsamba": 3,
+    "perşembe": 4,
+    "persembe": 4,
+    "cuma": 5,
+    "cumartesi": 6,
+    "pazar": 7
+  },
+  "week_modifiers": {
+    "haftaya": 7,
+    "gelecek hafta": 7,
+    "önümüzdeki hafta": 7,
+    "bu hafta": 0
+  },
+  "months": {
+    "ocak": 1,
+    "şubat": 2, "subat": 2,
+    "mart": 3,
+    "nisan": 4,
+    "mayıs": 5, "mayis": 5,
+    "haziran": 6,
+    "temmuz": 7,
+    "ağustos": 8, "agustos": 8,
+    "eylül": 9, "eylul": 9,
+    "ekim": 10,
+    "kasım": 11, "kasim": 11,
+    "aralık": 12, "aralik": 12
+  },
+  "dayparts": {
+    "sabah": {
+      "default_time": "09:00",
+      "hour": 9,
+      "minute": 0,
+      "is_estimated": true
+    },
+    "öğle": {
+      "default_time": "12:30",
+      "hour": 12,
+      "minute": 30,
+      "is_estimated": true
+    },
+    "öğlen": {
+      "default_time": "12:30",
+      "hour": 12,
+      "minute": 30,
+      "is_estimated": true
+    },
+    "öğleden sonra": {
+      "default_time": "14:30",
+      "hour": 14,
+      "minute": 30,
+      "is_estimated": true
+    },
+    "ogleden sonra": {
+      "default_time": "14:30",
+      "hour": 14,
+      "minute": 30,
+      "is_estimated": true
+    },
+    "ikindi": {
+      "default_time": "16:30",
+      "hour": 16,
+      "minute": 30,
+      "is_estimated": true
+    },
+    "akşam": {
+      "default_time": "19:00",
+      "hour": 19,
+      "minute": 0,
+      "is_estimated": true
+    },
+    "aksam": {
+      "default_time": "19:00",
+      "hour": 19,
+      "minute": 0,
+      "is_estimated": true
+    },
+    "gece": {
+      "default_time": "21:30",
+      "hour": 21,
+      "minute": 30,
+      "is_estimated": true
+    }
+  },
+  "relative_durations": [
+    {
+      "pattern": "yarım saat sonra|yarim saat sonra",
+      "minutes": 30
+    },
+    {
+      "pattern": "bir saat sonra|1 saat sonra",
+      "minutes": 60
+    },
+    {
+      "pattern": "iki saat sonra|2 saat sonra",
+      "minutes": 120
+    },
+    {
+      "pattern": "üç saat sonra|3 saat sonra",
+      "minutes": 180
+    }
+  ]
+}

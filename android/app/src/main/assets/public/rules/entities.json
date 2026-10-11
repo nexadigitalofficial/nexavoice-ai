@@ -1,0 +1,43 @@
+{
+  "honorifics": [
+    "bey", "beyi", "beye", "beyin", "bey'i", "bey'e", "bey'in",
+    "hanım", "hanımı", "hanıma", "hanımın", "hanım'ı", "hanım'a", "hanım'ın",
+    "usta", "ustaya", "ustanın", "usta'ya",
+    "avukat", "avukata", "avukatın", "avukat'a",
+    "noter", "notere",
+    "mimar", "mimara",
+    "mühendis", "muhendis",
+    "müdür", "mudur"
+  ],
+  "common_names": [
+    "ahmet", "mehmet", "ali", "mustafa", "ayşe", "fatma", "emine", "hatice",
+    "zeynep", "elif", "hüseyin", "hasan", "ibrahim", "ismail", "osman", "ömer",
+    "murat", "hakan", "burak", "emre", "serkan", "tolga", "can", "cem",
+    "selin", "gamze", "büşra", "merve", "derya", "ebru", "özlem", "aslı",
+    "yusuf", "eren", "kerem", "kaan", "berk", "bora", "barış", "volkan"
+  ],
+  "place_keywords": [
+    "villa", "daire", "arsa", "tarla", "dükkan", "ofis", "şantiye", "plaza",
+    "site", "rezidans", "tapu dairesi", "tapu", "noter", "belediye", "banka",
+    "adliye", "kadastro", "vergi dairesi", "havalimanı", "otel", "restoran", "cafe"
+  ],
+  "locative_suffixes": [
+    "da", "de", "ta", "te", "'da", "'de", "'ta", "'te", "nda", "nde"
+  ],
+  "conjunctions": [
+    "ve",
+    "sonra",
+    "ardından",
+    "daha sonra",
+    "ayrıca",
+    "bir de",
+    "bir de şunu",
+    "ondan sonra",
+    "peşinden",
+    "ardına"
+  ],
+  "action_stems": [
+    "ara", "görüş", "gorus", "git", "al", "ver", "öde", "ode", "imzala",
+    "göster", "goster", "bak", "incele", "uğra", "ugra", "teslim et", "gönder", "gonder"
+  ]
+}

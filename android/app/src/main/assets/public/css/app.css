@@ -1,0 +1,774 @@
+/* ===================================================================
+   SESLİ GÖREV ASİSTANI - MOBİL ÖNCELİKLİ, YÜKSEK KONTRASTLI CSS
+   Koyu Tema Varsayılan, Sıfır Dış Bağımlılık, Min 56dp Dokunma Alanı
+   =================================================================== */
+
+:root {
+  --bg-primary: #0b0f19;
+  --bg-surface: #151d2f;
+  --bg-card: #1e293b;
+  --bg-card-hover: #26354d;
+  --border-color: #334155;
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  --accent-emerald: #10b981;
+  --accent-emerald-glow: rgba(16, 185, 129, 0.35);
+  --accent-amber: #f59e0b;
+  --accent-amber-glow: rgba(245, 158, 11, 0.35);
+  --accent-red: #ef4444;
+  --accent-blue: #3b82f6;
+  --accent-purple: #8b5cf6;
+  
+  --mic-size: 190px;
+  --touch-target: 56px;
+  --radius-lg: 20px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  
+  --safe-bottom: env(safe-area-inset-bottom, 16px);
+  --safe-top: env(safe-area-inset-top, 16px);
+}
+
+[data-theme="light"] {
+  --bg-primary: #f1f5f9;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --border-color: #cbd5e1;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* --- ÜST BAŞLIK & ARAMA --- */
+header.app-header {
+  padding: calc(var(--safe-top) + 8px) 16px 12px 16px;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent-emerald), #047857);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  line-height: 1.2;
+}
+
+.brand-text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-nexa {
+  background: linear-gradient(135deg, #10B981, #06B6D4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+}
+
+.brand-voice {
+  color: var(--text-primary);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.brand-badge-ai {
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(16, 185, 129, 0.18);
+  color: var(--accent-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  letter-spacing: 0.05em;
+  margin-left: 2px;
+}
+
+.brand-offline-tag {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 1px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-icon {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-icon:active {
+  transform: scale(0.92);
+  background: var(--border-color);
+}
+
+/* Arama Çubuğu */
+.search-container {
+  padding: 10px 16px;
+  background-color: var(--bg-primary);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 4px 12px;
+  gap: 8px;
+  min-height: var(--touch-target);
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  user-select: text;
+}
+
+.search-box input::placeholder {
+  color: var(--text-muted);
+}
+
+.btn-search-mic {
+  background: none;
+  border: none;
+  color: var(--accent-emerald);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- ANA SES ETKİLEŞİM BÖLÜMÜ (DEV BUTON) --- */
+.voice-hero-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px 16px 16px;
+  position: relative;
+}
+
+.mic-button-wrapper {
+  position: relative;
+  width: var(--mic-size);
+  height: var(--mic-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+/* Nabız Efekti Halkaları */
+.pulse-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--accent-emerald);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.listening .pulse-ring:nth-child(1) {
+  animation: pulseAnimation 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.listening .pulse-ring:nth-child(2) {
+  animation: pulseAnimation 2s infinite 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+@keyframes pulseAnimation {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+}
+
+/* Dev Konuşma Butonu */
+.btn-main-mic {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  background: linear-gradient(145deg, #10b981, #059669);
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 12px 32px var(--accent-emerald-glow);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 10;
+}
+
+.btn-main-mic:active {
+  transform: scale(0.94);
+}
+
+.btn-main-mic svg {
+  width: 58px;
+  height: 58px;
+  stroke-width: 2.2;
+}
+
+.btn-main-mic .mic-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Dinleme ve İşleme Durumları */
+.listening .btn-main-mic {
+  background: linear-gradient(145deg, #ef4444, #dc2626);
+  box-shadow: 0 12px 36px rgba(239, 68, 68, 0.5);
+  animation: micBreathing 1.5s infinite alternate ease-in-out;
+}
+
+.processing .btn-main-mic {
+  background: linear-gradient(145deg, #f59e0b, #d97706);
+  box-shadow: 0 12px 36px var(--accent-amber-glow);
+}
+
+@keyframes micBreathing {
+  0% { transform: scale(1.0); }
+  100% { transform: scale(1.05); }
+}
+
+/* Canlı Dalga ve Süre */
+.audio-visualizer-container {
+  width: 100%;
+  max-width: 320px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+canvas#waveformCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+.recording-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent-emerald);
+  background: rgba(16, 185, 129, 0.12);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.recording-timer.active {
+  color: var(--accent-red);
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* Canlı Transkript Kutusu */
+.live-transcript-box {
+  width: 100%;
+  max-width: 440px;
+  min-height: 48px;
+  padding: 10px 16px;
+  background-color: var(--bg-surface);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.live-transcript-box.active {
+  border-color: var(--accent-emerald);
+  color: var(--text-primary);
+  font-style: normal;
+}
+
+/* --- SEKMELER (TABS) --- */
+.tab-navigation {
+  display: flex;
+  padding: 0 16px;
+  gap: 8px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  overflow-x: auto;
+}
+
+.tab-button {
+  flex: 1;
+  min-height: var(--touch-target);
+  padding: 10px 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+}
+
+.tab-button.active {
+  color: var(--accent-emerald);
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: var(--accent-emerald);
+  border-radius: 3px 3px 0 0;
+}
+
+.tab-badge {
+  background-color: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.tab-button.active .tab-badge {
+  background-color: var(--accent-emerald);
+  color: #ffffff;
+}
+
+/* --- GÖREV KARTLARI LİSTESİ --- */
+main.task-feed {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: calc(var(--safe-bottom) + 80px);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  color: var(--text-muted);
+  text-align: center;
+  gap: 12px;
+}
+
+.empty-state svg {
+  width: 48px;
+  height: 48px;
+  stroke: var(--text-muted);
+}
+
+/* Kaydırılabilir Görev Kartı */
+.task-card-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-surface);
+}
+
+.swipe-action-background {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.swipe-action-background.right-action {
+  background-color: var(--accent-emerald);
+  justify-content: flex-start;
+}
+
+.swipe-action-background.left-action {
+  background-color: var(--accent-red);
+  justify-content: flex-end;
+}
+
+.task-card {
+  position: relative;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.15s ease-out;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.task-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.task-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.task-category-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.task-raw-text {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Meta Bilgi Rozetleri */
+.task-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.meta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.meta-badge.estimated {
+  border-color: var(--accent-amber);
+  color: var(--accent-amber);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.meta-badge.priority-high {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--accent-red);
+  border-color: var(--accent-red);
+  font-weight: 700;
+}
+
+.meta-badge.person {
+  color: #38bdf8;
+  border-color: #0284c7;
+}
+
+.meta-badge.place {
+  color: #a78bfa;
+  border-color: #7c3aed;
+}
+
+/* Ses Dinleme Butonu */
+.btn-play-audio {
+  background: none;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  color: var(--accent-emerald);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* --- GERİ AL SNACKBAR --- */
+.undo-snackbar {
+  position: fixed;
+  bottom: calc(var(--safe-bottom) + 24px);
+  left: 16px;
+  right: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: #1e293b;
+  border: 1px solid var(--accent-emerald);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  transform: translateY(120%);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.undo-snackbar.show {
+  transform: translateY(0);
+}
+
+.undo-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.btn-undo-action {
+  background-color: var(--accent-emerald);
+  color: #0f172a;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-height: 40px;
+}
+
+/* --- AYARLAR VE DIŞA AKTAR ÇEKMECESİ / MODAL --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-sheet {
+  width: 100%;
+  max-width: 520px;
+  background-color: var(--bg-surface);
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+  padding: 24px 20px calc(var(--safe-bottom) + 24px) 20px;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-top: 1px solid var(--border-color);
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.sheet-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.setting-label {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.setting-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 30px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: var(--border-color);
+  transition: 0.25s;
+  border-radius: 30px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.25s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--accent-emerald);
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* Butonlar */
+.btn-primary {
+  width: 100%;
+  min-height: var(--touch-target);
+  background-color: var(--accent-emerald);
+  color: #0f172a;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.btn-secondary {
+  width: 100%;
+  min-height: var(--touch-target);
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}

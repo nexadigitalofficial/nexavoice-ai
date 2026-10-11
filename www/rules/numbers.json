@@ -1,0 +1,59 @@
+{
+  "units": {
+    "sıfır": 0, "sifir": 0,
+    "bir": 1,
+    "iki": 2,
+    "üç": 3, "uc": 3,
+    "dört": 4, "dort": 4,
+    "beş": 5, "bes": 5,
+    "altı": 6, "alti": 6,
+    "yedi": 7,
+    "sekiz": 8,
+    "dokuz": 9
+  },
+  "tens": {
+    "on": 10,
+    "yirmi": 20,
+    "otuz": 30,
+    "kırk": 40, "kirk": 40,
+    "elli": 50,
+    "altmış": 60, "altmis": 60,
+    "yetmiş": 70, "yetmis": 70,
+    "seksen": 80,
+    "doksan": 90
+  },
+  "scales": {
+    "yüz": 100, "yuz": 100,
+    "bin": 1000
+  },
+  "fractions": {
+    "buçuk": 0.5, "bucuk": 0.5,
+    "çeyrek": 0.25, "ceyrek": 0.25,
+    "yarım": 0.5, "yarim": 0.5
+  },
+  "clock_stems": {
+    "bir": 1, "bire": 1, "biri": 1, "birde": 1,
+    "iki": 2, "ikiye": 2, "ikiyi": 2, "ikide": 2,
+    "üç": 3, "üçe": 3, "üçü": 3, "üçte": 3, "uc": 3, "uce": 3, "ucu": 3, "ucte": 3,
+    "dört": 4, "dörde": 4, "dördü": 4, "dörtte": 4, "dort": 4, "dorde": 4, "dordu": 4, "dortte": 4,
+    "beş": 5, "beşe": 5, "beşi": 5, "beşte": 5, "bes": 5, "bese": 5, "besi": 5, "beste": 5,
+    "altı": 6, "altıya": 6, "altıyı": 6, "altıda": 6, "alti": 6, "altiya": 6, "altiyi": 6, "altida": 6,
+    "yedi": 7, "yediye": 7, "yediyi": 7, "yedide": 7,
+    "sekiz": 8, "sekize": 8, "sekizi": 8, "sekizde": 8,
+    "dokuz": 9, "dokuza": 9, "dokuzu": 9, "dokuzda": 9,
+    "on": 10, "ona": 10, "onu": 10, "onda": 10,
+    "on bir": 11, "on bire": 11, "on biri": 11, "on birde": 11,
+    "on iki": 12, "on ikiye": 12, "on ikiyi": 12, "on ikide": 12,
+    "on üç": 13, "on üçe": 13, "on üçü": 13, "on üçte": 13,
+    "on dört": 14, "on dörde": 14, "on dördü": 14, "on dörtte": 14,
+    "on beş": 15, "on beşe": 15, "on beşi": 15, "on beşte": 15,
+    "on altı": 16, "on altıya": 16, "on altıyı": 16, "on altıda": 16,
+    "on yedi": 17, "on yediye": 17, "on yediyi": 17, "on yedide": 17,
+    "on sekiz": 18, "on sekize": 18, "on sekizi": 18, "on sekizde": 18,
+    "on dokuz": 19, "on dokuza": 19, "on dokuzu": 19, "on dokuzda": 19,
+    "yirmi": 20, "yirmiye": 20, "yirmiyi": 20, "yirmide": 20,
+    "yirmi bir": 21, "yirmi birde": 21,
+    "yirmi iki": 22, "yirmi ikide": 22,
+    "yirmi üç": 23, "yirmi üçte": 23
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "categories": [
+    {
+      "id": "randevu",
+      "name": "Randevu",
+      "icon": "calendar-clock",
+      "color": "#8B5CF6",
+      "keywords": [
+        "tapu randevusu", "noter randevusu", "randevu", "randevusu", "randevum", 
+        "randevulaş", "randevulaştık", "sözleştik", "ziyaret", "ziyareti"
+      ]
+    },
+    {
+      "id": "gorusme",
+      "name": "Görüşme",
+      "icon": "handshake",
+      "color": "#3B82F6",
+      "keywords": [
+        "görüşme", "görüşmesi", "görüş", "görüşelim", "görüşeceğiz", "toplantı", "toplantısı", 
+        "buluş", "buluşma", "buluşması", "pazarlık", "pazarlığı", "müşteri görüşmesi", "müzakere",
+        "yemekte görüş", "öğle yemeğinde", "ogle yemeginde", "sunumu", "sunum"
+      ]
+    },
+    {
+      "id": "arama",
+      "name": "Arama",
+      "icon": "phone-call",
+      "color": "#10B981",
+      "keywords": [
+        "ara", "aramak", "arama", "arayalım", "aranacak", "telefon", "telefon et", 
+        "whatsapp", "whatsapptan", "mesaj", "mesaj at", "ulaş", "haber ver", "bilgi ver",
+        "borcunu sor", "aidat borcunu sor"
+      ]
+    },
+    {
+      "id": "gezi",
+      "name": "Gezi / Yer Gösterme",
+      "icon": "home",
+      "color": "#F59E0B",
+      "keywords": [
+        "yer gösterme", "yer gösterimi", "daire gösterimi", "arsa gösterimi", "gezi", 
+        "gezdir", "portföy fotoğrafları", "fotoğraflarını çek", "yer bakma", "keşif",
+        "imar durumu", "imar durumuna bak"
+      ]
+    },
+    {
+      "id": "evrak",
+      "name": "Evrak / Tapu",
+      "icon": "file-text",
+      "color": "#EC4899",
+      "keywords": [
+        "kapora durumu", "kapora", "kapora makbuzu",
+        "tapu", "tapu masrafları", "tapu dairesi", "tapu harcı", 
+        "noter", "noterde", "vekalet", "yetki belgesi",
+        "sözleşme", "kontrat", "kira sözleşmesi", "ekspertiz", "rapor", "belediye", 
+        "rayiç", "rayiç bedeli", "harç", "harcını yatır", "ipotek", "kadastro", 
+        "imza", "imzala", "imzalat", "evrak", "belge"
+      ]
+    },
+    {
+      "id": "takip",
+      "name": "Takip",
+      "icon": "clipboard-list",
+      "color": "#06B6D4",
+      "keywords": [
+        "takip", "takip et", "kontrol et", "sorgula", "fiyat araştır", "piyasa", 
+        "portföyü güncelle", "ilan gir", "ilanı güncelle", "ilanları güncelle", 
+        "ilanları kontrol et", "sahibinden", "sahibinden ilanları",
+        "teklif", "teklifini değerlendir", "teklif ver", "dönüş yap", "geri dönüş", "cevap bekle"
+      ]
+    },
+    {
+      "id": "kisisel",
+      "name": "Kişisel",
+      "icon": "user",
+      "color": "#6366F1",
+      "keywords": [
+        "kahve", "eczane", "ilaç", "banka", "atm", 
+        "market", "alışveriş", "çocuk", "okul", "kuaför", "berber", "spor", "araba", "benzin"
+      ]
+    },
+    {
+      "id": "genel",
+      "name": "Genel",
+      "icon": "check-circle",
+      "color": "#64748B",
+      "keywords": [
+        "yap", "hallet", "tamamla", "unutma", "not", "hatırla"
+      ]
+    }
+  ],
+  "default_category": "genel"
+}

@@ -1,0 +1,33 @@
+{
+  "priorities": [
+    {
+      "level": "high",
+      "label": "Yüksek",
+      "color": "#EF4444",
+      "keywords": [
+        "acil", "acilen", "hemen", "mutlaka", "cok onemli", "çok önemli", 
+        "önemli", "onemli", "sakın unutma", "sakin unutma", "ilk iş", "ilk is", 
+        "derhal", "kritik", "öncelikli", "oncelikli", "ivedi"
+      ]
+    },
+    {
+      "level": "low",
+      "label": "Düşük",
+      "color": "#10B981",
+      "keywords": [
+        "fırsat bulursan", "firsat bulursan", "acelesi yok", "zamanın olunca", 
+        "zamanin olunca", "bir ara", "sonra da olur", "müsait olunca", "musait olunca"
+      ]
+    },
+    {
+      "level": "medium",
+      "label": "Orta",
+      "color": "#F59E0B",
+      "keywords": [
+        "unutma", "lazım", "lazim", "gerek", "gerekli", "normal"
+      ]
+    }
+  ],
+  "default_priority": "medium",
+  "auto_elevate_if_due_today": true
+}
