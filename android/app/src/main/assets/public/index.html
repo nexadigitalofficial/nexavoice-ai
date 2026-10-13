@@ -28,7 +28,7 @@
       </div>
       <div class="brand-text-container">
         <h1 class="brand-title"><span class="brand-nexa">NEXA</span><span class="brand-voice">VOICE</span> <span class="brand-badge-ai">AI</span></h1>
-        <div class="brand-offline-tag">%100 Çevrimdışı Türkçe Asistan</div>
+        <div class="brand-offline-tag" id="headerEngineTag">Gemini AI / Offline Hibrit</div>
       </div>
     </div>
 
@@ -141,12 +141,52 @@
         <button class="btn-icon" id="btnCloseSettings">✕</button>
       </div>
 
+      <!-- GEMINI AI ENTEGRASYON BÖLÜMÜ -->
+      <div class="gemini-settings-card">
+        <div class="setting-item" style="border-bottom: none; padding-bottom: 6px;">
+          <div>
+            <div class="setting-label" style="display: flex; align-items: center; gap: 6px;">
+              <span>Google Gemini AI</span>
+              <span class="badge-pill-gemini">ÖNERİLEN</span>
+            </div>
+            <div class="setting-desc">Çok modlu ses analizi & yüksek Türkçe doğruluğu</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="settingGeminiEnabled" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div id="geminiConfigPanel" style="margin-top: 6px; padding: 10px; background: rgba(0,0,0,0.15); border-radius: 8px;">
+          <div style="margin-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <label style="font-size: 0.78rem; color: var(--text-secondary); font-weight: 600;">Gemini API Anahtarı</label>
+              <a href="https://aistudio.google.com/apikey" target="_blank" style="color: #06B6D4; text-decoration: none; font-size: 0.75rem; font-weight: 500;">Ücretsiz Key Al ↗</a>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <input type="password" id="inputGeminiKey" placeholder="AIzaSy..." class="search-box" style="flex: 1; padding: 8px 10px; font-family: monospace; font-size: 0.8rem; letter-spacing: 0.05em;">
+              <button type="button" id="btnToggleKeyVisibility" class="btn-icon" style="min-width: 36px; min-height: 36px;" title="Göster/Gizle">👁</button>
+              <button type="button" id="btnTestGeminiKey" class="btn-primary" style="padding: 0 12px; font-size: 0.78rem; min-height: 36px;" title="Test Et">Test Et</button>
+            </div>
+            <div id="geminiTestStatus" style="font-size: 0.75rem; margin-top: 4px; min-height: 16px;"></div>
+          </div>
+
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <label style="font-size: 0.78rem; color: var(--text-secondary); min-width: 45px;">Model:</label>
+            <select id="selectGeminiModel" class="search-box" style="flex: 1; padding: 6px 8px; font-size: 0.78rem; background: var(--bg-surface); color: var(--text-primary);">
+              <option value="gemini-1.5-flash">Gemini 1.5 Flash (En Hızlı & Ücretsiz)</option>
+              <option value="gemini-2.0-flash">Gemini 2.0 Flash (En Yeni)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div class="setting-item">
         <div>
           <div class="setting-label">Offline Türkçe Modeli (Vosk)</div>
-          <div class="setting-desc" id="modelStatusText">Durum: Yüklü ve Hazır (~45 MB)</div>
+          <div class="setting-desc" id="modelStatusText">İnternetsiz yedek motor (~45 MB)</div>
         </div>
-        <span style="color: var(--accent-emerald); font-weight: 700;">AKTİF</span>
+        <span id="voskBadgeStatus" style="color: var(--accent-emerald); font-weight: 700; font-size: 0.85rem;">YEDEK AKTİF</span>
       </div>
 
       <div class="setting-item">
@@ -297,6 +337,8 @@
   <script src="./js/nlp/nlpEngine.js"></script>
   <script src="./js/storage/db.js"></script>
   <script src="./js/audio/voicePlugin.js"></script>
+  <script src="./js/audio/audioRecorder.js"></script>
+  <script src="./js/ai/geminiService.js"></script>
   <script src="./js/notifications/reminder.js"></script>
   <script src="./js/app.js"></script>
 

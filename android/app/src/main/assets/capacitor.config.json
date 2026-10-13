@@ -1,6 +1,6 @@
 {
 	"appId": "com.seslinotlar.app",
-	"appName": "Sesli Notlar",
+	"appName": "NexaVoice AI",
 	"webDir": "www",
 	"bundledWebRuntime": false,
 	"server": {

@@ -38,6 +38,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const settingDarkTheme = document.getElementById('settingDarkTheme');
   const btnSaveSettings = document.getElementById('btnSaveSettings');
 
+  // Gemini AI Ayarları ve Başlık Etiketi
+  const headerEngineTag = document.getElementById('headerEngineTag');
+  const settingGeminiEnabled = document.getElementById('settingGeminiEnabled');
+  const geminiConfigPanel = document.getElementById('geminiConfigPanel');
+  const inputGeminiKey = document.getElementById('inputGeminiKey');
+  const btnToggleKeyVisibility = document.getElementById('btnToggleKeyVisibility');
+  const btnTestGeminiKey = document.getElementById('btnTestGeminiKey');
+  const geminiTestStatus = document.getElementById('geminiTestStatus');
+  const selectGeminiModel = document.getElementById('selectGeminiModel');
+
   // Dışa Aktarma
   const btnExportCsv = document.getElementById('btnExportCsv');
   const btnExportJson = document.getElementById('btnExportJson');
@@ -84,6 +94,110 @@ document.addEventListener('DOMContentLoaded', async () => {
   settingHoldMode.checked = userSettings.holdMode;
   settingDarkTheme.checked = userSettings.darkTheme;
   document.documentElement.setAttribute('data-theme', userSettings.darkTheme ? 'dark' : 'light');
+
+  // --- GEMINI AI & MOTOR YÖNETİMİ ---
+  function isGeminiActive() {
+    return Boolean(window.GeminiService && GeminiService.isReady());
+  }
+
+  function updateEngineUI() {
+    const active = isGeminiActive();
+    if (active) {
+      if (headerEngineTag) {
+        headerEngineTag.textContent = 'Gemini AI Aktif ⚡';
+        headerEngineTag.style.color = '#38BDF8';
+        headerEngineTag.classList.add('engine-active-glow');
+      }
+      if (geminiConfigPanel) geminiConfigPanel.style.opacity = '1';
+    } else {
+      if (headerEngineTag) {
+        headerEngineTag.textContent = '%100 Çevrimdışı (Vosk)';
+        headerEngineTag.style.color = 'var(--accent-emerald)';
+        headerEngineTag.classList.remove('engine-active-glow');
+      }
+      if (geminiConfigPanel) {
+        geminiConfigPanel.style.opacity = (settingGeminiEnabled && settingGeminiEnabled.checked) ? '1' : '0.5';
+      }
+    }
+  }
+
+  if (window.GeminiService) {
+    if (inputGeminiKey) inputGeminiKey.value = GeminiService.getApiKey();
+    if (selectGeminiModel) selectGeminiModel.value = GeminiService.getModel();
+    if (settingGeminiEnabled) settingGeminiEnabled.checked = GeminiService.isEnabled;
+  }
+  updateEngineUI();
+
+  if (btnToggleKeyVisibility && inputGeminiKey) {
+    btnToggleKeyVisibility.addEventListener('click', () => {
+      if (inputGeminiKey.type === 'password') {
+        inputGeminiKey.type = 'text';
+        btnToggleKeyVisibility.textContent = '🔒';
+      } else {
+        inputGeminiKey.type = 'password';
+        btnToggleKeyVisibility.textContent = '👁';
+      }
+    });
+  }
+
+  if (btnTestGeminiKey && inputGeminiKey) {
+    btnTestGeminiKey.addEventListener('click', async () => {
+      const key = inputGeminiKey.value.trim();
+      if (!key) {
+        geminiTestStatus.innerHTML = '<span style="color: #EF4444;">Lütfen bir API anahtarı girin.</span>';
+        return;
+      }
+      geminiTestStatus.innerHTML = '<span style="color: #38BDF8;">Bağlantı test ediliyor...</span>';
+      try {
+        GeminiService.setApiKey(key);
+        if (selectGeminiModel) GeminiService.setModel(selectGeminiModel.value);
+        await GeminiService.testConnection(key);
+        geminiTestStatus.innerHTML = '<span style="color: #10B981; font-weight: 600;">✓ Başarılı! Gemini API bağlandı.</span>';
+        updateEngineUI();
+      } catch (err) {
+        geminiTestStatus.innerHTML = `<span style="color: #EF4444;">✕ Hata: ${escapeHtml(err.message)}</span>`;
+      }
+    });
+  }
+
+  if (settingGeminiEnabled) {
+    settingGeminiEnabled.addEventListener('change', () => {
+      if (window.GeminiService) GeminiService.setEnabled(settingGeminiEnabled.checked);
+      updateEngineUI();
+    });
+  }
+
+  // Web Speech API ile canlı anlık önizleme (Gemini kaydı sırasında opsiyonel)
+  let interimSpeechRecognizer = null;
+
+  function startInterimRecognizer() {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRec) return;
+    try {
+      interimSpeechRecognizer = new SpeechRec();
+      interimSpeechRecognizer.lang = 'tr-TR';
+      interimSpeechRecognizer.continuous = true;
+      interimSpeechRecognizer.interimResults = true;
+      interimSpeechRecognizer.onresult = (event) => {
+        let interim = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          interim += event.results[i][0].transcript;
+        }
+        if (interim && isRecording) {
+          liveTranscript.textContent = `"${interim}"`;
+        }
+      };
+      interimSpeechRecognizer.onerror = () => {};
+      interimSpeechRecognizer.start();
+    } catch (_) {}
+  }
+
+  function stopInterimRecognizer() {
+    if (interimSpeechRecognizer) {
+      try { interimSpeechRecognizer.stop(); } catch (_) {}
+      interimSpeechRecognizer = null;
+    }
+  }
 
   // --- MOTORLARIN BAŞLATILMASI ---
   const nlp = new NlpEngine();
@@ -135,11 +249,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       // Canlı Nabız Dalgası
       canvasCtx.beginPath();
-      canvasCtx.strokeStyle = '#10B981';
+      const useGemini = isGeminiActive();
+      canvasCtx.strokeStyle = useGemini ? '#38BDF8' : '#10B981';
       canvasCtx.lineWidth = 3;
 
+      let baseAmp = 12;
+      if (useGemini && window.AudioRecorder) {
+        const audioLevel = AudioRecorder.getAudioLevel();
+        baseAmp = 6 + (audioLevel * 30);
+      }
+
       for (let x = 0; x < width; x++) {
-        const amplitude = 12 * Math.sin((x * 0.05) + wavePhase) * Math.sin(x * 0.02);
+        const amplitude = baseAmp * Math.sin((x * 0.05) + wavePhase) * Math.sin(x * 0.02);
         const y = midY + amplitude;
         if (x === 0) canvasCtx.moveTo(x, y);
         else canvasCtx.lineTo(x, y);
@@ -176,24 +297,34 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --- SES ETKİLEŞİM DÖNGÜSÜ ---
   async function startRecording() {
     if (isRecording) return;
-    if (!VoiceManager.isModelLoaded) {
-      liveTranscript.textContent = 'Dil modeli ilk açılışta hazırlanıyor, lütfen 2-3 saniye bekleyin...';
+    const useGemini = isGeminiActive();
+
+    // Çevrimdışı Vosk modunda model henüz hazır değilse uyar
+    if (!useGemini && !VoiceManager.isModelLoaded) {
+      liveTranscript.textContent = 'Çevrimdışı dil modeli hazırlanıyor, lütfen 2-3 saniye bekleyin...';
       triggerHaptic(40);
       return;
     }
+
     try {
       triggerHaptic(80);
       isRecording = true;
       micWrapper.classList.add('listening');
       micLabel.textContent = 'DURDUR';
       liveTranscript.classList.add('active');
-      liveTranscript.textContent = 'Dinleniyor... Konuşun...';
+      liveTranscript.textContent = useGemini ? 'Dinleniyor (Gemini AI)... Konuşun...' : 'Dinleniyor... Konuşun...';
       startTimer();
-      await VoiceManager.startListening();
+
+      if (useGemini) {
+        await AudioRecorder.start();
+        startInterimRecognizer();
+      } else {
+        await VoiceManager.startListening();
+      }
     } catch (err) {
       console.error('[App] Kayıt başlatılamadı:', err);
       stopRecordingUI();
-      const errDetail = err && (err.message || (typeof err === 'string' ? err : JSON.stringify(err))) ? (err.message || err) : 'Mikrofon başlatılamadı.';
+      const errDetail = err && (err.message || (typeof err === 'string' ? err : JSON.stringify(err))) ? (err.message || err) : 'Mikrofon başlatılamadı. İzin verildiğinden emin olun.';
       alert(errDetail);
     }
   }
@@ -204,34 +335,116 @@ document.addEventListener('DOMContentLoaded', async () => {
     stopTimer();
     micWrapper.classList.remove('listening');
     micWrapper.classList.add('processing');
-    micLabel.textContent = 'İŞLENİYOR';
-    liveTranscript.textContent = 'Anlaşılıyor ve organize ediliyor...';
 
-    await VoiceManager.stopListening();
+    const useGemini = isGeminiActive();
+
+    if (useGemini) {
+      micLabel.textContent = 'YAPAY ZEKA...';
+      liveTranscript.textContent = 'Gemini AI sesi analiz ediyor ve organize ediyor...';
+      stopInterimRecognizer();
+
+      try {
+        const audioResult = await AudioRecorder.stop();
+
+        if (!audioResult.base64 || audioResult.durationMs < 400) {
+          stopRecordingUI();
+          liveTranscript.textContent = 'Ses kaydı çok kısa veya algılanamadı.';
+          return;
+        }
+
+        const { transcript, tasks } = await GeminiService.processAudio(
+          audioResult.base64,
+          audioResult.mimeType
+        );
+
+        await handleCreatedTasks(tasks, transcript, audioResult.audioUrl, audioResult.durationMs);
+      } catch (err) {
+        console.error('[Gemini İşleme Hatası]', err);
+        liveTranscript.textContent = 'Gemini Hatası: ' + (err.message || 'Yanıt alınamadı');
+        alert('Gemini Hatası: ' + err.message + '\nİnternet bağlantınızı veya API anahtarınızı kontrol edin.');
+      } finally {
+        stopRecordingUI();
+      }
+    } else {
+      micLabel.textContent = 'İŞLENİYOR';
+      liveTranscript.textContent = 'Anlaşılıyor ve organize ediliyor...';
+      await VoiceManager.stopListening();
+    }
   }
 
   function stopRecordingUI() {
     isRecording = false;
     stopTimer();
     micWrapper.classList.remove('listening', 'processing');
-    micLabel.textContent = VoiceManager.isModelLoaded ? 'KONUŞ' : 'YÜKLENİYOR...';
+    micLabel.textContent = (isGeminiActive() || VoiceManager.isModelLoaded) ? 'KONUŞ' : 'YÜKLENİYOR...';
     liveTranscript.classList.remove('active');
+  }
+
+  async function handleCreatedTasks(newTasks, transcript, audioPath, durationMs = 0) {
+    if (isVoiceSearching) {
+      isVoiceSearching = false;
+      searchInput.value = transcript;
+      renderCurrentFeed();
+      liveTranscript.textContent = `Arama yapıldı: "${transcript}"`;
+      return;
+    }
+
+    if (!transcript || transcript.trim().length < 2) {
+      liveTranscript.textContent = 'Hiçbir konuşma algılanmadı. Lütfen tekrar deneyin.';
+      return;
+    }
+
+    liveTranscript.textContent = `Tamamlandı: "${transcript}"`;
+
+    if (!newTasks || newTasks.length === 0) {
+      liveTranscript.textContent = `"${transcript}" - Metinden görev çıkarılamadı.`;
+      return;
+    }
+
+    // 1. Ham ses kaydını sakla
+    await AppDatabase.addRecording({
+      id: 'rec_' + Date.now().toString(36),
+      audio_path: audioPath || '',
+      duration_ms: durationMs || (timerSeconds * 1000),
+      transcript: transcript,
+      created_at: new Date().toISOString()
+    });
+
+    // 2. Veritabanına kaydet
+    await AppDatabase.addTasks(newTasks);
+    lastCreatedTasks = newTasks;
+
+    // 3. Yerel bildirimleri planla
+    for (const task of newTasks) {
+      ReminderService.scheduleTaskReminder(task);
+    }
+
+    // 4. Ekranı yenile ve Geri Al Snackbar'ını göster
+    await refreshFeedAndBadges();
+    const engineName = isGeminiActive() ? 'Gemini AI' : 'Vosk';
+    showUndoSnackbar(`${newTasks.length} yeni görev organize edildi (${engineName}).`);
   }
 
   // Model Durumu Bildirimi
   VoiceManager.onModelStatusCallback = (status, message) => {
     if (status === 'loading') {
-      micLabel.textContent = 'YÜKLENİYOR...';
-      micWrapper.classList.add('processing');
+      if (!isGeminiActive()) {
+        micLabel.textContent = 'YÜKLENİYOR...';
+        micWrapper.classList.add('processing');
+      }
       liveTranscript.textContent = message;
     } else if (status === 'ready') {
-      micLabel.textContent = 'KONUŞ';
-      micWrapper.classList.remove('processing');
+      if (!isGeminiActive()) {
+        micLabel.textContent = 'KONUŞ';
+        micWrapper.classList.remove('processing');
+      }
       liveTranscript.textContent = 'Model hazır! Konuşmak için butona dokunun.';
       const statusText = document.getElementById('modelStatusText');
       if (statusText) statusText.textContent = 'Durum: Yüklü ve Hazır (~45 MB)';
     } else if (status === 'error') {
-      micLabel.textContent = 'HATA';
+      if (!isGeminiActive()) {
+        micLabel.textContent = 'HATA';
+      }
       liveTranscript.textContent = message;
     }
   };
@@ -244,50 +457,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   VoiceManager.onFinalResultCallback = async (transcript, audioPath) => {
     stopRecordingUI();
-
-    if (isVoiceSearching) {
-      isVoiceSearching = false;
-      searchInput.value = transcript;
-      renderCurrentFeed();
-      return;
-    }
-
     if (!transcript || transcript.trim().length < 2) {
       liveTranscript.textContent = 'Hiçbir konuşma algılanmadı. Lütfen tekrar deneyin.';
       return;
     }
-
-    liveTranscript.textContent = `Tamamlandı: "${transcript}"`;
-
-    // 1. Türkçe NLP Motoru ile görevleri çıkar (<50ms)
+    // Türkçe NLP Motoru ile görevleri çıkar (<50ms)
     const newTasks = nlp.processTranscript(transcript, audioPath);
-
-    if (newTasks.length === 0) {
-      liveTranscript.textContent = 'Metinden görev çıkarılamadı.';
-      return;
-    }
-
-    // 2. Ham ses kaydını sakla
-    await AppDatabase.addRecording({
-      id: 'rec_' + Date.now().toString(36),
-      audio_path: audioPath,
-      duration_ms: timerSeconds * 1000,
-      transcript: transcript,
-      created_at: new Date().toISOString()
-    });
-
-    // 3. Veritabanına kaydet
-    await AppDatabase.addTasks(newTasks);
-    lastCreatedTasks = newTasks;
-
-    // 4. Yerel bildirimleri planla
-    for (const task of newTasks) {
-      ReminderService.scheduleTaskReminder(task);
-    }
-
-    // 5. Ekranı yenile ve Geri Al Snackbar'ını göster
-    await refreshFeedAndBadges();
-    showUndoSnackbar(`${newTasks.length} yeni görev organize edildi.`);
+    await handleCreatedTasks(newTasks, transcript, audioPath, timerSeconds * 1000);
   };
 
   VoiceManager.onErrorCallback = (err) => {
@@ -609,6 +785,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     localStorage.setItem('autoSilence', userSettings.autoSilence);
     localStorage.setItem('holdMode', userSettings.holdMode);
     localStorage.setItem('darkTheme', userSettings.darkTheme);
+
+    if (window.GeminiService) {
+      if (inputGeminiKey) GeminiService.setApiKey(inputGeminiKey.value.trim());
+      if (selectGeminiModel) GeminiService.setModel(selectGeminiModel.value);
+      if (settingGeminiEnabled) GeminiService.setEnabled(settingGeminiEnabled.checked);
+    }
+    updateEngineUI();
 
     VoiceManager.autoSilenceStopEnabled = userSettings.autoSilence;
     document.documentElement.setAttribute('data-theme', userSettings.darkTheme ? 'dark' : 'light');

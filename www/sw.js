@@ -3,7 +3,7 @@
  * Uçak modunda ve internetsiz ortamda eksiksiz çalışır.
  */
 
-const CACHE_NAME = 'sesli-notlar-v1';
+const CACHE_NAME = 'sesli-notlar-v2';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -16,6 +16,8 @@ const STATIC_ASSETS = [
   './js/nlp/nlpEngine.js',
   './js/storage/db.js',
   './js/audio/voicePlugin.js',
+  './js/audio/audioRecorder.js',
+  './js/ai/geminiService.js',
   './js/notifications/reminder.js',
   './rules/categories.json',
   './rules/temporal.json',
