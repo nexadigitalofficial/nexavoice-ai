@@ -104,7 +104,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const active = isGeminiActive();
     if (active) {
       if (headerEngineTag) {
-        headerEngineTag.textContent = 'Gemini AI Aktif ⚡';
+        const currentModel = window.GeminiService ? GeminiService.getModel() : '';
+        let badgeLabel = 'Gemini 3.8 AI ⚡';
+        if (currentModel === 'gemini-cognitive-routing') {
+          badgeLabel = 'Bilişsel AI Ağı ⚡';
+        } else if (currentModel === 'gemini-3.8-flash') {
+          badgeLabel = 'Gemini 3.8 Flash ⚡';
+        } else if (currentModel === 'gemini-3.8-live') {
+          badgeLabel = 'Gemini 3.8 Live ⚡';
+        } else if (currentModel === 'gemini-3.5-flash-lite') {
+          badgeLabel = 'Gemini 3.5 Lite ⚡';
+        } else if (currentModel === 'gemini-3.5-transcribe') {
+          badgeLabel = 'Gemini 3.5 Transcribe ⚡';
+        }
+        headerEngineTag.textContent = badgeLabel;
         headerEngineTag.style.color = '#38BDF8';
         headerEngineTag.classList.add('engine-active-glow');
       }
@@ -127,6 +140,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (settingGeminiEnabled) settingGeminiEnabled.checked = GeminiService.isEnabled;
   }
   updateEngineUI();
+
+  if (selectGeminiModel) {
+    selectGeminiModel.addEventListener('change', () => {
+      if (window.GeminiService) GeminiService.setModel(selectGeminiModel.value);
+      updateEngineUI();
+    });
+  }
 
   if (btnToggleKeyVisibility && inputGeminiKey) {
     btnToggleKeyVisibility.addEventListener('click', () => {

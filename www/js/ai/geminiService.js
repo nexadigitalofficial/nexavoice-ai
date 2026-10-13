@@ -1,10 +1,11 @@
 /**
- * NexaVoice AI - Google Gemini API & Transcribe Entegrasyonu
- * Resmi Google AI Studio REST v1beta generateContent & interactions standardı
- * - Gemini 3.5 Transcribe (Resmi Ses Tanıma Modeli, Smart Mode & Custom Vocabulary)
- * - Multimodal Ses (Audio WebM/Opus) -> Yapılandırılmış JSON Görev Listesi
- * - responseSchema & responseMimeType garantili JSON çıktısı
- * - Otomatik hata yakalama, akıllı tarih eşleme ve yedekli mimari
+ * NexaVoice AI - Google Gemini 3.8 Çok Katmanlı AI Ağı & Bilişsel Yönlendirme (Cognitive Routing)
+ * Ekim 2026 Standartları:
+ * - Gemini 3.8 Flash (Amiral Gemisi: Otonom planlama, karmaşık iş akışları, yazılım ve görev tasarımı)
+ * - Gemini 3.8 Live (Sıfır gecikme, akıcı gerçek zamanlı sesli diyalog)
+ * - Gemini 3.5 Flash-Lite (Yüksek hacim, anlık veri ayrıştırma, minimal gecikme)
+ * - Gemini 3.5 Transcribe (Resmi konuşma tanıma modeli, Smart Mode & Custom Vocabulary)
+ * - Bilişsel Yönlendirme (Cognitive Routing): İşlemin doğasına göre en rasyonel modele dinamik yönlendirme
  */
 
 (function (root, factory) {
@@ -19,8 +20,8 @@
   class GeminiService {
     constructor() {
       this.apiKey = localStorage.getItem('gemini_api_key') || '';
-      // Varsayılan model olarak en son dökümantasyon modeli: gemini-3.5-transcribe veya gemini-1.5-flash
-      this.model = localStorage.getItem('gemini_model') || 'gemini-3.5-transcribe';
+      // Varsayılan model: 2026 Amiral Gemisi gemini-3.8-flash
+      this.model = localStorage.getItem('gemini_model') || 'gemini-3.8-flash';
       const savedEnabled = localStorage.getItem('gemini_enabled');
       this.isEnabled = savedEnabled !== null ? savedEnabled === 'true' : true;
       this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models';
@@ -37,7 +38,7 @@
     }
 
     setModel(modelName) {
-      this.model = modelName || 'gemini-3.5-transcribe';
+      this.model = modelName || 'gemini-3.8-flash';
       localStorage.setItem('gemini_model', this.model);
     }
 
@@ -55,6 +56,35 @@
     }
 
     /**
+     * Bilişsel Model Yönlendirme Haritası
+     * Görevin karmaşıklığına ve gecikme ihtiyacına göre hedef modeli belirler.
+     */
+    resolveModelForTask(taskType = 'multimodal_audio') {
+      if (this.model !== 'gemini-cognitive-routing') {
+        return this.model;
+      }
+
+      // Cognitive Routing mantığı:
+      switch (taskType) {
+        case 'quick_search':
+        case 'quick_classification':
+          // Basit, yüksek hacimli sınıflandırma -> 3.5 Flash-Lite
+          return 'gemini-3.5-flash-lite';
+        case 'live_audio_stream':
+          // Düşük gecikmeli gerçek zamanlı ses -> 3.8 Live
+          return 'gemini-3.8-live';
+        case 'speech_transcription':
+          // Özel dikte ve konuşma tanıma -> 3.5 Transcribe
+          return 'gemini-3.5-transcribe';
+        case 'multimodal_audio':
+        case 'deep_planning':
+        default:
+          // Karmaşık Türkçe anlama, zaman planlama ve otonom karar alma -> 3.8 Flash
+          return 'gemini-3.8-flash';
+      }
+    }
+
+    /**
      * Google AI Studio Bağlantısını Test Et
      */
     async testConnection(customKey = null) {
@@ -63,59 +93,62 @@
         throw new Error('Lütfen geçerli bir Gemini API anahtarı girin.');
       }
 
-      const modelForTest = this.model === 'gemini-3.5-transcribe' ? 'gemini-1.5-flash' : this.model;
-      const url = `${this.baseUrl}/${modelForTest}:generateContent?key=${keyToUse}`;
-      const payload = {
-        contents: [{
-          parts: [{ text: 'Test: Yanıt olarak sadece "NEXA_OK" kelimesini döndür.' }]
-        }],
-        generationConfig: {
-          maxOutputTokens: 10
-        }
-      };
+      const candidateModels = ['gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+      let lastError = null;
 
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      if (!res.ok) {
-        let errorDetail = `HTTP ${res.status}`;
+      for (const m of candidateModels) {
         try {
-          const errData = await res.json();
-          if (errData && errData.error && errData.error.message) {
-            errorDetail = errData.error.message;
+          const url = `${this.baseUrl}/${m}:generateContent?key=${keyToUse}`;
+          const payload = {
+            contents: [{
+              parts: [{ text: 'Test: Yanıt olarak sadece "NEXA_OK" kelimesini döndür.' }]
+            }],
+            generationConfig: { maxOutputTokens: 10 }
+          };
+
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.ok) {
+            return true;
           }
-        } catch (_) {}
-        throw new Error(`Bağlantı hatası: ${errorDetail}`);
+
+          const errData = await res.json().catch(() => ({}));
+          lastError = errData && errData.error && errData.error.message ? errData.error.message : `HTTP ${res.status}`;
+        } catch (e) {
+          lastError = e.message;
+        }
       }
 
-      return true;
+      throw new Error(`Bağlantı hatası: ${lastError || 'API anahtarı doğrulanamadı'}`);
     }
 
     /**
      * Ana Ses İşleme Giriş Noktası
-     * Kullanıcının seçtiği modele göre (gemini-3.5-transcribe veya multimodal flash) yönlendirir.
+     * Bilişsel Yönlendirme (Cognitive Routing) ile en uygun modeli çalıştırır.
      */
     async processAudio(base64Audio, mimeType = 'audio/webm', refDate = new Date()) {
       if (!this.isReady()) {
         throw new Error('Gemini API anahtarı girilmemiş veya Gemini modu kapalı.');
       }
 
-      // 1. Kullanıcı gemini-3.5-transcribe seçtiyse resmi transcribe API'sini çağır
-      if (this.model === 'gemini-3.5-transcribe') {
+      const targetModel = this.resolveModelForTask('multimodal_audio');
+
+      // 1. Özel Transcribe Modeli seçildiyse:
+      if (targetModel === 'gemini-3.5-transcribe') {
         try {
           return await this.processAudioWithTranscribe(base64Audio, mimeType, refDate);
         } catch (transcribeErr) {
-          console.warn('[Gemini 3.5 Transcribe fallback to multimodal flash]', transcribeErr);
-          // interactions API kullanıcının bölgesinde/anahtarında henüz açılmadıysa otomatik multimodal fallback
-          return await this.processAudioMultimodal(base64Audio, mimeType, refDate, 'gemini-1.5-flash');
+          console.warn('[Gemini 3.5 Transcribe fallback to 3.8 Flash]', transcribeErr);
+          return await this.processAudioMultimodal(base64Audio, mimeType, refDate, 'gemini-3.8-flash');
         }
       }
 
-      // 2. Multimodal Doğrudan generateContent (Flash / Pro modelleri)
-      return await this.processAudioMultimodal(base64Audio, mimeType, refDate, this.model);
+      // 2. Multimodal Ses Motoru (3.8 Flash, 3.8 Live, 3.5 Flash-Lite)
+      return await this.processAudioMultimodal(base64Audio, mimeType, refDate, targetModel);
     }
 
     /**
@@ -190,30 +223,29 @@
         transcript = 'Ses kaydı çözümlendi';
       }
 
-      // Akıllı Türkçe transkripti alıp yapılandırılmış görev listesine dönüştür
+      // Akıllı Türkçe transkripti alıp 3.8 Flash ile yapılandırılmış görev listesine dönüştür
       return await this.processText(transcript, refDate);
     }
 
     /**
-     * Multimodal Doğrudan Ses İşleme (gemini-1.5-flash / gemini-2.0-flash / gemini-1.5-pro)
-     * Tek adımda hem ASR hem de JSON görev ayrıştırması yapar.
+     * Çok Modlu (Multimodal) Ses & Otonom Planlama Motoru
+     * Gemini 3.8 Flash / 3.8 Live / 3.5 Flash-Lite
      */
-    async processAudioMultimodal(base64Audio, mimeType = 'audio/webm', refDate = new Date(), modelOverride = null) {
-      const activeModel = modelOverride || this.model || 'gemini-1.5-flash';
+    async processAudioMultimodal(base64Audio, mimeType = 'audio/webm', refDate = new Date(), preferredModel = 'gemini-3.8-flash') {
       const dateStr = this.formatDate(refDate);
-      const systemPrompt = `Sen saha ve gayrimenkul danışmanları için çalışan üstün yetenekli NexaVoice AI asistanısın.
-Sana gönderilen Türkçe ses kaydını Google "Smart Transcription" prensipleriyle analiz et:
+      const systemPrompt = `Sen saha ve gayrimenkul danışmanları için çalışan üstün yetenekli NexaVoice AI otonom asistanısın (Gemini 3.8 Bilişsel Motoru).
+Sana gönderilen Türkçe ses kaydını analiz et:
 
-1. AKILLI TÜRKÇE TRANSKRİPSİYON (Smart Transcription):
-   - Konuşmanın eksiksiz, pürüzsüz ve dil bilgisine uygun Türkçe metnini oluştur (büyük/küçük harf, noktalama).
-   - "ııı", "şey", "yani", "öhm", "hımm" gibi takılma ve dolgu seslerini akıllıca temizle.
-   - Konuşma sırasındaki düzeltmeleri çöz (örneğin: "yarın saat iki, pardon üçte buluşalım" dendiyse son düzeltilen zaman olan 15:00'i esas al).
+1. AKILLI TÜRKÇE ANLAMA (Smart Transcription):
+   - Konuşmanın eksiksiz, akıcı ve dil bilgisine uygun Türkçe transkriptini oluştur.
+   - Konuşma esnasındaki gereksiz "ııı", "şey", "yani", "öhm" gibi takılmaları ve duraksamaları temizle.
+   - Konuşma esnasındaki anlık düzeltmeleri çöz (örneğin: "yarın saat iki, pardon üçte buluşalım" dendiyse son düzeltilen saat olan 15:00'i esas al).
    - Sayı, tarih ve para birimlerini doğal biçimlendir (örn: "üç buçukta" -> 15:30, "on bin lira" -> 10.000 TL).
 
 2. ALAN VE SEKTÖR KELİME DAĞARCIĞI (Domain Vocabulary):
    - Gayrimenkul ve saha terimlerine yüksek hassasiyet göster: Tapu, kadastro, ada, parsel, iskan, kat irtifakı, kat mülkiyeti, rayiç bedel, ekspertiz, DASK, noter, vekaletname, kira kontratı, kapora, portföy, yer gösterme, vb.
 
-3. GÖREVLERİ AYRIŞTIRMA VE ORGANİZE ETME:
+3. OTONOM GÖREV PLANLAMA VE AYRIŞTIRMA:
    - Konuşmadaki tüm bağımsız eylemleri ayrı görevlere böl ("ve", "sonra", "bir de", "ayrıca" gibi bağlaçları ayrıştır).
    - Her görev için eylem odaklı kısa bir başlık üret (örn: "Ahmet Bey ile Tapuda Buluş").
    - Kategori: 'Görüşme', 'Randevu', 'Arama', 'Gezi / Yer Gösterme', 'Evrak / Tapu', 'Takip', 'Kişisel', 'Genel'.
@@ -247,39 +279,56 @@ Referans Bugünün Tarihi: ${dateStr}.
         }
       };
 
-      const url = `${this.baseUrl}/${activeModel}:generateContent?key=${this.apiKey}`;
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      // Modeller arası kademeli akıllı geçiş zinciri (Sıfır Hata Garantisi)
+      const modelFallbackChain = [
+        preferredModel,
+        'gemini-3.8-flash',
+        'gemini-3.5-flash-lite',
+        'gemini-2.0-flash',
+        'gemini-1.5-flash'
+      ];
 
-      if (!res.ok) {
-        let errorDetail = `HTTP ${res.status}`;
+      // Yinelenenleri kaldır
+      const uniqueChain = Array.from(new Set(modelFallbackChain));
+
+      let lastError = null;
+      for (const modelToTry of uniqueChain) {
         try {
-          const errData = await res.json();
-          if (errData && errData.error && errData.error.message) {
-            errorDetail = errData.error.message;
+          const url = `${this.baseUrl}/${modelToTry}:generateContent?key=${this.apiKey}`;
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            return this.parseResponse(data, refDate, '', modelToTry);
           }
-        } catch (_) {}
-        throw new Error(`Gemini Multimodal Hatası: ${errorDetail}`);
+
+          const errData = await res.json().catch(() => ({}));
+          lastError = errData && errData.error && errData.error.message ? errData.error.message : `HTTP ${res.status}`;
+          console.warn(`[GeminiService] ${modelToTry} yanıt vermedi (${lastError}), zincirdeki sonraki modele geçiliyor...`);
+        } catch (fetchErr) {
+          lastError = fetchErr.message;
+          console.warn(`[GeminiService] ${modelToTry} bağlantı hatası:`, fetchErr);
+        }
       }
 
-      const data = await res.json();
-      return this.parseResponse(data, refDate);
+      throw new Error(`Gemini AI Motoru Hatası: ${lastError || 'Ses işlenemedi'}`);
     }
 
     /**
-     * Metin Transkriptini Gemini'ye Gönderip Görev Listesi Çıkarma
+     * Metin Transkriptini Gemini ile Görev Listesine Dönüştürme
      */
     async processText(transcript, refDate = new Date()) {
       if (!this.isReady()) {
         throw new Error('Gemini API anahtarı girilmemiş veya Gemini modu kapalı.');
       }
 
-      const textModel = (this.model === 'gemini-3.5-transcribe') ? 'gemini-1.5-flash' : this.model;
+      const textModel = this.resolveModelForTask('deep_planning');
       const dateStr = this.formatDate(refDate);
-      const systemPrompt = `Sen saha ve gayrimenkul danışmanları için çalışan profesyonel NexaVoice AI asistanısın.
+      const systemPrompt = `Sen saha ve gayrimenkul danışmanları için çalışan profesyonel NexaVoice AI otonom asistanısın.
 Kullanıcının Türkçe sesli notunu analiz et. Tüm bağımsız görevleri tespit et ve JSON şemasına uygun liste olarak üret.
 Referans Bugünün Tarihi: ${dateStr}.`;
 
@@ -297,26 +346,32 @@ Referans Bugünün Tarihi: ${dateStr}.`;
         }
       };
 
-      const url = `${this.baseUrl}/${textModel}:generateContent?key=${this.apiKey}`;
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      const modelChain = [textModel, 'gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+      const uniqueChain = Array.from(new Set(modelChain));
 
-      if (!res.ok) {
-        let errorDetail = `HTTP ${res.status}`;
+      let lastError = null;
+      for (const m of uniqueChain) {
         try {
-          const errData = await res.json();
-          if (errData && errData.error && errData.error.message) {
-            errorDetail = errData.error.message;
+          const url = `${this.baseUrl}/${m}:generateContent?key=${this.apiKey}`;
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            return this.parseResponse(data, refDate, transcript, m);
           }
-        } catch (_) {}
-        throw new Error(`Gemini Metin Ayrıştırma Hatası: ${errorDetail}`);
+
+          const errData = await res.json().catch(() => ({}));
+          lastError = errData && errData.error && errData.error.message ? errData.error.message : `HTTP ${res.status}`;
+        } catch (e) {
+          lastError = e.message;
+        }
       }
 
-      const data = await res.json();
-      return this.parseResponse(data, refDate, transcript);
+      throw new Error(`Gemini Metin Ayrıştırma Hatası: ${lastError || 'Bilinmiyor'}`);
     }
 
     /**
@@ -364,7 +419,7 @@ Referans Bugünün Tarihi: ${dateStr}.`;
     /**
      * Gemini JSON Çıktısını Nexa Görev Formatına Dönüştürme
      */
-    parseResponse(data, refDate, fallbackTranscript = '') {
+    parseResponse(data, refDate, fallbackTranscript = '', executedModel = 'gemini-3.8-flash') {
       try {
         const candidate = data.candidates && data.candidates[0];
         const textPart = candidate && candidate.content && candidate.content.parts && candidate.content.parts[0];
@@ -392,7 +447,7 @@ Referans Bugünün Tarihi: ${dateStr}.`;
               date: 0.99,
               time: 0.99,
               overall: 0.99,
-              engine: 'gemini-ai'
+              engine: executedModel
             }),
             status: 'pending',
             created_at: new Date().toISOString(),
@@ -400,7 +455,7 @@ Referans Bugünün Tarihi: ${dateStr}.`;
           };
         });
 
-        return { transcript, tasks };
+        return { transcript, tasks, modelUsed: executedModel };
       } catch (err) {
         console.error('[GeminiService] JSON ayrıştırma hatası:', err);
         throw new Error('Gemini yanıtı görev formatına dönüştürülemedi: ' + err.message);
